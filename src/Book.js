@@ -7,7 +7,8 @@ class Book extends React.Component {
     this.state = {
       coverImageUrl: '',
       title: '',
-      authors: ''
+      authors: '',
+      shelf: '',
     }
   }
 
@@ -16,7 +17,8 @@ class Book extends React.Component {
       this.setState({
         coverImageUrl: book.imageLinks.smallThumbnail,
         title: book.title,
-        authors: book.authors
+        authors: book.authors,
+        shelf: book.shelf,
       })
     });
   }
@@ -31,7 +33,7 @@ class Book extends React.Component {
             backgroundImage: `url("${this.state.coverImageUrl}")`
           }}></div>
           <div className="book-shelf-changer">
-            <select>
+            <select value={this.state.shelf} readOnly={true}>
               <option value="none" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>

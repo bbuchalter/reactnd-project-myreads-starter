@@ -10,6 +10,7 @@ class Book extends React.Component {
       authors: '',
       shelf: '',
     }
+    this.shelfChange = this.shelfChange.bind(this);
   }
 
   componentDidMount() {
@@ -33,7 +34,7 @@ class Book extends React.Component {
             backgroundImage: `url("${this.state.coverImageUrl}")`
           }}></div>
           <div className="book-shelf-changer">
-            <select value={this.state.shelf} readOnly={true}>
+            <select value={this.state.shelf} onChange={this.shelfChange}>
               <option value="none" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
@@ -46,6 +47,10 @@ class Book extends React.Component {
         <div className="book-authors">{this.state.authors}</div>
       </div>
     );
+  }
+
+  shelfChange(event) {
+    this.props.onShelfChange(this.props, event.currentTarget.value);
   }
 }
 

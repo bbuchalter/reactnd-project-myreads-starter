@@ -8,54 +8,57 @@ class Library extends React.Component {
     super(props);
     this.state = {
       bookIdsByShelf: {},
-      shelfNames: [],
+      loading: true,
     };
+    this.shelfNames = ["currentlyReading", "wantToRead", "read"];
     this.moveBookToNewShelf = this.moveBookToNewShelf.bind(this);
   }
 
   componentDidMount() {
     BooksAPI.getAll().then(books => {
       const bookIdsByShelf = {}
-      const shelfNames = []
 
       books.forEach(book => {
         if(bookIdsByShelf[book.shelf] !== undefined) {
           bookIdsByShelf[book.shelf].push(book.id)
         } else {
-          shelfNames.push(book.shelf)
           bookIdsByShelf[book.shelf] = [book.id]
         }
       });
       this.setState({
         bookIdsByShelf: bookIdsByShelf,
-        shelfNames: shelfNames,
+        loading: false,
       });
     });
   }
 
   render() {
-    return(
-      <div className="list-books">
-        <div className="list-books-title">
-          <h1>MyReads</h1>
-        </div>
-        <div className="list-books-content">
-          <div>
-            {this.state.shelfNames.map(shelfName =>
-              <Bookshelf
-                key={shelfName}
-                name={shelfName}
-                bookIds={this.state.bookIdsByShelf[shelfName]}
-                onShelfChange={this.moveBookToNewShelf}
-              />
-            )}
+    if(this.state.loading) {
+      return(<div>Loading...</div>)
+    } else {
+      return(
+        <div className="list-books">
+          <div className="list-books-title">
+            <h1>MyReads</h1>
+          </div>
+          <div className="list-books-content">
+            <div>
+              {this.shelfNames.map(shelfName =>
+                <Bookshelf
+                  key={shelfName}
+                  name={shelfName}
+                  bookIds={this.state.bookIdsByShelf[shelfName]}
+                  onShelfChange={this.moveBookToNewShelf}
+                />
+              )}
+            </div>
+          </div>
+          <div className="open-search">
+            <Link to="/search">Add a book</Link>
           </div>
         </div>
-        <div className="open-search">
-          <Link to="/search">Add a book</Link>
-        </div>
-      </div>
-    );
+      );
+    }
   }
 
   moveBookToNewShelf(bookProps, shelfName) {

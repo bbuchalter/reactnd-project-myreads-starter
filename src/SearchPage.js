@@ -1,8 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BookGrid from './BookGrid';
+import * as BooksAPI from './BooksAPI'
 
 class SearchPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      bookIds: []
+    }
+    this.onSearch = this.onSearch.bind(this);
+  }
+
+  onSearch(event) {
+    BooksAPI.search(event.currentTarget.value).then(books => {
+      this.setState({ bookIds: books.map(book => book.id)})
+    });
+  }
+
   render() {
     return(
       <div className="search-books">
@@ -17,12 +32,16 @@ class SearchPage extends React.Component {
               However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
               you don't find a specific author or title. Every search is limited by search terms.
             */}
-            <input type="text" placeholder="Search by title or author"/>
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              onKeyUp={this.onSearch}
+            />
 
           </div>
         </div>
         <div className="search-books-results">
-          <BookGrid bookIds={[]} />
+          <BookGrid bookIds={this.state.bookIds} />
         </div>
       </div>
     );

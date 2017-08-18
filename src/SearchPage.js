@@ -41,7 +41,10 @@ class SearchPage extends React.Component {
           </div>
         </div>
         <div className="search-books-results">
-          <BookGrid bookIds={this.state.bookIds} />
+          <BookGrid
+            bookIds={this.state.bookIds}
+            onShelfChange={this.props.onShelfChange}
+          />
         </div>
       </div>
     );

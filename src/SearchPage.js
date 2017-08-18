@@ -7,13 +7,16 @@ class SearchPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookIds: []
+      bookIds: [],
+      query: ''
     }
     this.onSearch = this.onSearch.bind(this);
   }
 
   onSearch(event) {
     const query = event.currentTarget.value;
+    this.setState({query});
+
     if(query !== '') {
       BooksAPI.search(query).then(books => {
         if(books.length) {
@@ -44,7 +47,8 @@ class SearchPage extends React.Component {
             <input
               type="text"
               placeholder="Search by title or author"
-              onKeyUp={this.onSearch}
+              onChange={this.onSearch}
+              value={this.state.query}
             />
 
           </div>

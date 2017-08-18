@@ -13,9 +13,18 @@ class SearchPage extends React.Component {
   }
 
   onSearch(event) {
-    BooksAPI.search(event.currentTarget.value).then(books => {
-      this.setState({ bookIds: books.map(book => book.id)})
-    });
+    const query = event.currentTarget.value;
+    if(query !== '') {
+      BooksAPI.search(query).then(books => {
+        if(books.length) {
+          this.setState({ bookIds: books.map(book => book.id)});
+        } else {
+          this.setState({ bookIds: []});
+        }
+      });
+    } else {
+      this.setState({ bookIds: []});
+    }
   }
 
   render() {

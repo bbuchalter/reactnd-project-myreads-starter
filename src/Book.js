@@ -50,7 +50,9 @@ class Book extends React.Component {
   }
 
   shelfChange(event) {
-    this.props.onShelfChange(this.props, event.currentTarget.value);
+    const newShelfName = event.currentTarget.value;
+    this.setState({shelf: newShelfName})
+    this.props.onShelfChange(this.props, newShelfName);
   }
 }
 

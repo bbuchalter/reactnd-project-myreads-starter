@@ -7,25 +7,25 @@ class Library extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      shelves: {},
+      bookIdsByShelf: {},
       shelfNames: [],
     };
   }
   componentDidMount() {
     BooksAPI.getAll().then(books => {
-      const shelves = {}
+      const bookIdsByShelf = {}
       const shelfNames = []
 
       books.forEach(book => {
-        if(shelves[book.shelf] !== undefined) {
-          shelves[book.shelf].push(book.id)
+        if(bookIdsByShelf[book.shelf] !== undefined) {
+          bookIdsByShelf[book.shelf].push(book.id)
         } else {
           shelfNames.push(book.shelf)
-          shelves[book.shelf] = [book.id]
+          bookIdsByShelf[book.shelf] = [book.id]
         }
       });
       this.setState({
-        shelves: shelves,
+        bookIdsByShelf: bookIdsByShelf,
         shelfNames: shelfNames,
       });
     });
@@ -39,7 +39,13 @@ class Library extends React.Component {
         </div>
         <div className="list-books-content">
           <div>
-            {this.state.shelfNames.map(name => <Bookshelf key={name} name={name} />)}
+            {this.state.shelfNames.map(shelfName =>
+              <Bookshelf
+                key={shelfName}
+                name={shelfName}
+                bookIds={this.state.bookIdsByShelf[shelfName]}
+              />
+            )}
           </div>
         </div>
         <div className="open-search">

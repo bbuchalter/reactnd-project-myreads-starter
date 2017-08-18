@@ -18,6 +18,7 @@ class Book extends React.Component {
         </div>
         <div className="book-title">To Kill a Mockingbird</div>
         <div className="book-authors">Harper Lee</div>
+        <div>{this.props.id}</div>
       </div>
     );
   }
